@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>test</title>
+
+    <link href="./assets/css/bootstrap.css" rel="stylesheet">
+
+</head>
+<body>
+
+
+<section class="d-block border-bottom mt-2 p-2">
+    <button class="btn btn-success mx-2 d-block" onclick="showAlert()">
+        alert
+    </button>
+</section>
+
+<section class="d-block border-bottom mt-2 p-2">
+    <button class="btn btn-success mx-2 d-block" onclick="submitData()">
+        Submit
+    </button>
+
+    <section id="list-clients" class="mx-2 d-block  mt-2"></section>
+</section>
+
+<section class="d-block border-bottom mt-2 p-2">
+    <button class="btn btn-success mx-2 d-block" onclick="submitOnlineData()">
+        Submit online
+    </button>
+
+    <section id="list-api-clients" class="mx-2 d-block  mt-2"></section>
+</section>
+
+
+
+<script src="./assets/js/jquery.js"></script>
+<script src="./assets/js/bootstrap.bundle.min.js"></script>
+<script src="./assets/js/bootstrap.min.js"></script>
+<script src="./assets/js/popper.min.js"></script>
+
+<script>
+
+    //==================================================================================================
+    function showAlert(){
+        alert("Hi")
+    }
+
+
+
+    //==================================================================================================
+
+    // fetch / ajax
+    //------
+    // header    ---> client    // method : "get / post"
+    // request   ---> client
+    // api       ---> {header , request}
+    // response  ---> result
+    function submitData(){
+
+        let dataGet = '[ { "id": 1, "first_name": "Masoud", "last_name": "Maarefiyan" }, { "id": 2, "first_name": "Gazaleh", "last_name": "Samodi" }]';
+        try{
+            const data = JSON.parse(dataGet)
+
+            $("#list-clients").html('')
+            if (data != null && Array.isArray(data)){
+                for (let i = 0; i <data.length ; i++) {
+                    const item = data[i];
+
+                    /*let firstName = "";
+                    if (item.hasOwnProperty("first_name")){
+                        firstName = item.first_name
+                    }*/
+                    let id = item.hasOwnProperty("id") ? item.id : null;
+                    let firstName = item.hasOwnProperty("first_name") ? item.first_name : null;
+                    let lastName = item.hasOwnProperty("last_name") ? item.last_name : null;
+
+                    const element =
+                        '<div class="mx-2 p-2 border shadow-sm row mt-2 ">' +
+
+                        '<div class="col-6 bg-info border-bottom"> شناسه </div>' +
+                        '<div class="col-6 border-bottom">'+id+'</div>' +
+
+                        '<div class="col-6 bg-info border-bottom"> نام </div>' +
+                        '<div class="col-6 border-bottom">'+firstName+'</div>' +
+
+                        '<div class="col-6 bg-info ">  نام خانوادگی </div>' +
+                        '<div class="col-6 ">'+lastName+'</div>' +
+
+                        '</div>';
+
+                    $("#list-clients").append(element)
+                }
+            }
+
+        }
+        catch (e){
+            console.error(e)
+        }
+
+    }
+
+
+    //==================================================================================================
+
+    // *---------------------------- simple fun
+    // ----------------------------* async function (await)
+    // promise(fetch) ----> step1 -> step2 -> step3 -> ...
+    async function submitOnlineData(){
+        await fetch('https://jsonplaceholder.typicode.com/users')
+            //step 1
+            .then((response) => {
+                const responseStatusCode = response.status;
+                if (responseStatusCode == 200){
+                    return response.json()
+                }
+                else if (responseStatusCode == 404){
+                    console.log("code 404")
+                }
+            })
+            //step 2
+            .then((data) => {
+                $("#list-api-clients").html('')
+                if (data != null && Array.isArray(data)){
+                    for (let i = 0; i <data.length ; i++) {
+                        const item = data[i];
+
+                        let id = item.hasOwnProperty("id") ? item.id : null;
+                        let name = item.hasOwnProperty("name") ? item.name : null;
+                        let email = item.hasOwnProperty("email") ? item.email : null;
+
+                        const element =
+                            '<div class="mx-2 p-2 border shadow-sm row mt-2 ">' +
+
+                            '<div class="col-6 bg-info border-bottom"> شناسه </div>' +
+                            '<div class="col-6 border-bottom">'+id+'</div>' +
+
+                            '<div class="col-6 bg-info border-bottom"> نام </div>' +
+                            '<div class="col-6 border-bottom">'+name+'</div>' +
+
+                            '<div class="col-6 bg-info ">  ایمیل </div>' +
+                            '<div class="col-6 ">'+email+'</div>' +
+
+                            '</div>';
+
+                        $("#list-api-clients").append(element)
+                    }
+                }
+            })
+            // error
+            .catch((error)=>{
+                console.error("api failed: " + error)
+            });
+    }
+
+
+
+
+
+
+    /*    [
+        {
+            name: "mehdi"
+        },
+        {
+            name: "mehdi"
+        },
+        {
+            name: "mehdi"
+        }
+    ]*/
+
+    /* $("#btn-test").click(function () {
+        alert("asd")
+    })*/
+
+    /*for (let i = 0; i < ; i++) {
+
+    }
+
+    Object.keys().forEach(()=>{
+
+    })*/
+
+</script>
+
+</body>
+</html>
