@@ -1,0 +1,22 @@
+//help
+git -h
+git --help
+//start git --> make the ripository
+git init
+//
+git add .
+git commit -m start-project
+//branch
+git branch main
+//before push in server.. email and name are needed
+git config --global user.email ----
+git config --global user.name ----
+//conect to server
+git remote add {remote} {url}
+//send to server
+git push -u {remote} {branch}
+//kholase avali
+git push
+//download from server(github)
+git pull {remote} {branch} --allow-unrelated-histories
+git pull origin branchname --allow-unrelated-histories
